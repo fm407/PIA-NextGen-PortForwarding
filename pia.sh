@@ -28,10 +28,9 @@ TMPCONFFILE='/tmp/tmpconfig.xml'
 TRANSIP=`xml sel -t -v "//alias[name=\"$IPALIAS\"]/address" $CONFFILE`
 
 ########################  MAIN  #########################
-                                                        #
-# Wait for VPN interface to get fully UP                #
-sleep 10                                               #
-#########################################################
+
+# Wait for VPN interface to get fully UP  
+sleep 10
 
 ###### PIA Variables ######
 curl_max_time=15
