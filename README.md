@@ -9,7 +9,7 @@ Your pfSense needs the following packages: `xmlstarlet` `jq` `base64`
 
 About base64: if you can't install base64 with `pkg install base64` download the binary from here: https://pkg.freebsd.org/FreeBSD:11:amd64/quarterly/All/base64-1.5_1.txz , install it with `pkg-static install base64-1.5_1.txz` and verify base64 is present in `/usr/local/bin`
 
-Now you can follow the Installation Guide:
+Now you can follow this guide:
 
 # **I. pfSense side**
 
