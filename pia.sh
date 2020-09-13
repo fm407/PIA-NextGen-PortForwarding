@@ -179,7 +179,7 @@ fi
 
 # Update remote Transmission config with new port
 
-ssh_user=fm
+ssh_user='YOUR SSH USER'
 
 ssh $(ssh_user)@${TRANSIP} "./transportupdate.sh ${pf_port}"
 TRANSRC=$?
