@@ -28,19 +28,19 @@ TMPCONFFILE='/tmp/tmpconfig.xml'
 TRANSIP=`xml sel -t -v "//alias[name=\"$IPALIAS\"]/address" $CONFFILE`
 
 ########################  MAIN  #########################
-#                                                       #
+                                                        #
 # Wait for VPN interface to get fully UP                #
-sleep 10                        			#
+sleep 10                                               #
 #########################################################
 
 ###### PIA Variables ######
 curl_max_time=15
 curl_retry=5
 curl_retry_delay=15
-user='YOUR PIA USERNAME'
+user='YOUT PIA USERNAME'
 pass='YOUR PIA PASSWORD'
 
-###### Nextgen PIA port forwarding 	##################
+###### Nextgen PIA port forwarding      ##################
 
 get_auth_token () {
     tok=$(curl --insecure --silent --show-error --request POST --max-time $curl_max_time \
@@ -82,12 +82,7 @@ get_sig () {
   pf_getsignature=$(echo $pf_getsig | jq -r .signature)
   pf_port=$(echo $pf_payload | base64 -d | jq -r .port)
   pf_token_expiry_raw=$(echo $pf_payload | base64 -d | jq -r .expires_at)
-  # Coreutils date doesn't need format specified (-D), whereas BusyBox does
-  if date --help 2>&1 /dev/null | grep -i 'busybox' > /dev/null; then
-    pf_token_expiry=$(date -D %Y-%m-%dT%H:%M:%S --date="$pf_token_expiry_raw" +%s)
-  else
-    pf_token_expiry=$(date --date="$pf_token_expiry_raw" +%s)
-  fi
+  pf_token_expiry=$(date -jf %Y-%m-%dT%H:%M:%S "$pf_token_expiry_raw" +%s)
 }
 
 
@@ -99,7 +94,7 @@ pf_minreuse=$(( 60 * 60 * 24 * 7 ))
 
 pf_remaining=0
 pf_firstrun=1
-vpn_ip=$(traceroute -m 1 -i $OVPNIFACE privateinternetaccess.com | tail -n 1 | awk '{print $2}')
+vpn_ip=$(traceroute -m 1 privateinternetaccess.com | tail -n 1 | awk '{print $2}')
 pf_host="$vpn_ip"
 
 while true; do
@@ -126,7 +121,7 @@ while true; do
   echo "$(date): Server accepted PF bind"
   echo "$(date): Forwarding on port $pf_port"
   echo "$(date): Rebind interval: $pf_bindinterval seconds"
- 
+  
 if [ "$pf_port" == "" ]; then
     pf_port='0'
     logger "[PIA] Port forwarding is already activated on this connection, has expired, or you are not connected to a PIA region that supports port forwarding."
@@ -182,15 +177,16 @@ if [ "$PINGRC" -gt 0  ]; then
 	exit 1
 fi
 
-# Update remote Transmission config with new port, change your ssh user
+# Update remote Transmission config with new port
 
-ssh_user='YOUR SSH USERNAME'
+ssh_user=fm
 
-ssh ${ssh_user}@${TRANSIP} "./transportupdate.sh ${pf_port}"
+ssh $(ssh_user)@${TRANSIP} "./transportupdate.sh ${pf_port}"
 TRANSRC=$?
 
 if [ "$TRANSRC" -gt 0  ]; then
 	logger "[PIA] Error! Unable to remotely update Transmission port over SSH!"
+  # EMAIL
 	exit 1
 fi
 logger "[PIA] New port successfully updated in remote Transmission system."
