@@ -45,6 +45,7 @@ System -> Advanced => tick "Enable Secure Shell"</br>
 **6.Create NAT rule for port-forward using the ALIAS instead of specific port/IP**</br>
 -Go to Firewall -> NAT</br>
 -Create new rule like bellow (blue values could be different depending on your current VPN configuration)</br>
+<img src="imgs/pia-nat.png"></br>
 
 **7.Generate SSH keys for enhanced security**</br>
 -SSH to the pfSense box with the user created in step 2.</br>
@@ -88,3 +89,6 @@ notify 0 {
         action "service pia-portforwarding stop";
 };
 ```
+
+**Note: The "ovpnc1" is a technical name of the OpenVPN interface from within the pfSense UI**</br>
+<img src="imgs/pia-iface.png"></br>
