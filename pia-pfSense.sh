@@ -121,11 +121,9 @@ if [ "$pf_port" == "" ]; then
     exit 0
   elif ! [ "$pf_port" -eq "$pf_port" ] 2> /dev/null; then
     logger "[PIA] Fatal error! Value $pf_port is not a number. PIA API has most probably changed. Manual check necessary."
-    # EMAIL
     exit 1
   elif [ "$pf_port" -lt 1024 ] || [ "$pf_port" -gt 65535  ]; then
     logger "[PIA] Fatal error! Value $pf_port outside allowed port range. PIA API has most probably changed. Manual check necessary."
-    # EMAIL
     exit 1
   fi
 logger "[PIA] Acquired forwarding port: $pf_port"
@@ -148,7 +146,6 @@ xml val -q $TMPCONFFILE
 XMLVAL=$?
 if [ "$XMLVAL" -eq 1 ]; then
 	logger "[PIA] Fatal error! Updated tempconf file $TMPCONFFILE does not have valid XML format. Verify that the port alias is correct in script header and exists in pfSense Alias list"
-  # EMAIL
 	exit 1
 fi
 
@@ -166,7 +163,6 @@ ping -c1 -t1 -q $TRANSIP
 PINGRC=$?
 if [ "$PINGRC" -gt 0  ]; then
 	logger "[PIA] Error! Transmission host $TRANSIP is not reachable!"
-  # EMAIL
 	exit 1
 fi
 
@@ -179,7 +175,6 @@ TRANSRC=$?
 
 if [ "$TRANSRC" -gt 0  ]; then
 	logger "[PIA] Error! Unable to remotely update Transmission port over SSH!"
-  # EMAIL
 	exit 1
 fi
 logger "[PIA] New port successfully updated in remote Transmission system."
