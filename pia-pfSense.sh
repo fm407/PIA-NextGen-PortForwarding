@@ -7,6 +7,7 @@ export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/root/b
 # Based on: https://github.com/thrnz/docker-wireguard-pia/blob/master/extra/pf.sh
 # Dependencies: xmlstarlet jq base64
 # Compatibility: pfSense 2.4>
+# Before starting setup PIA following this guide: https://blog.networkprofile.org/private-internet-access-vpn-on-pfsense/
 
 ###### Update these variables if necessary ######
 
