@@ -170,7 +170,7 @@ fi
 
 ssh_user='YOUR SSH USER'
 
-ssh $(ssh_user)@${TRANSIP} "./transportupdate.sh ${pf_port}"
+ssh ${ssh_user}@${TRANSIP} "./transportupdate.sh ${pf_port}"
 TRANSRC=$?
 
 if [ "$TRANSRC" -gt 0  ]; then
