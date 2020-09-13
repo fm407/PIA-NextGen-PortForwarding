@@ -29,7 +29,7 @@ TRANSIP=`xml sel -t -v "//alias[name=\"$IPALIAS\"]/address" $CONFFILE`
 ########################  MAIN  #########################
 #                                                       #
 # Wait for VPN interface to get fully UP                #
-sleep 10                        												#
+sleep 10                        			#
 #########################################################
 
 ###### PIA Variables ######
@@ -98,7 +98,7 @@ pf_minreuse=$(( 60 * 60 * 24 * 7 ))
 
 pf_remaining=0
 pf_firstrun=1
-vpn_ip=$(traceroute -4 -m 1 privateinternetaccess.com | tail -n 1 | awk '{print $2}')
+vpn_ip=$(traceroute -m 1 -i $OVPNIFACE privateinternetaccess.com | tail -n 1 | awk '{print $2}')
 pf_host="$vpn_ip"
 
 while true; do
