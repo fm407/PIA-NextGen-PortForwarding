@@ -46,7 +46,7 @@ System -> Advanced => tick "Enable Secure Shell"</br>
 
 **6.Create NAT rule for port-forward using the ALIAS instead of specific port/IP**</br>
 -Go to Firewall -> NAT</br>
--Create new rule like bellow (blue values could be different depending on your current VPN configuration)</br>
+-Create new rule like bellow (some values could be different depending on your current VPN configuration)</br>
 <img src="imgs/pia-nat.png"></br>
 
 **7.Generate SSH keys for enhanced security**</br>
