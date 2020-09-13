@@ -114,13 +114,6 @@ while true; do
     echo "$(date): Forwarding on port $pf_port"
     echo "$(date): Rebind interval: $pf_bindinterval seconds"
   fi
-  sleep $pf_bindinterval &
-  wait $!
-
-  bind_port
-  echo "$(date): Server accepted PF bind"
-  echo "$(date): Forwarding on port $pf_port"
-  echo "$(date): Rebind interval: $pf_bindinterval seconds"
   
 if [ "$pf_port" == "" ]; then
     pf_port='0'
@@ -190,5 +183,13 @@ if [ "$TRANSRC" -gt 0  ]; then
 	exit 1
 fi
 logger "[PIA] New port successfully updated in remote Transmission system."
+
+  sleep $pf_bindinterval &
+  wait $!
+
+  bind_port
+  echo "$(date): Server accepted PF bind"
+  echo "$(date): Forwarding on port $pf_port"
+  echo "$(date): Rebind interval: $pf_bindinterval seconds"
 
 done
