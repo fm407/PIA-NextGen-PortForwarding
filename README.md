@@ -104,5 +104,28 @@ touch pia-pfSense.sh
 chmod u+x pia-pfSense.sh
 vi pia-pfSense.sh
 ```
--Paste the code from https://github.com/fm407/PIA-NextGen-PortForwarding/blob/master/pia-pfSense.sh OR just download it and chmod +x it.
-**!!! Some customization is necessary. Please read the script. It will need at minimum your PIA user and pass and the Transmission host ssh user !!!**
+-Paste the code from https://github.com/fm407/PIA-NextGen-PortForwarding/blob/master/pia-pfSense.sh OR just download it and chmod +x it.</br>
+**!!! Some customization is necessary. Please read the script. It will need at minimum your PIA user and pass and the Transmission host ssh user !!!**</br>
+
+Put https://github.com/fm407/PIA-NextGen-PortForwarding/blob/master/pia-portforwarding-rc in `/usr/local/etc/rc.d` and chmod +x it or just:</br>
+```
+touch /usr/local/etc/rc.d/pia-portforwarding-rc
+chmod +x /usr/local/etc/rc.d/pia-portforwarding-rc
+vi /usr/local/etc/rc.d/pia-portforwarding-rc
+```
+
+And paste the following in it:</br>
+
+```
+#!/bin/sh
+
+. /etc/rc.subr
+
+name=pia-portforwarding
+rcvar=`set_rcvar`
+command=/home/custom/piaportforward/pia-pfSense.sh
+start_cmd="/usr/sbin/daemon $command"
+
+load_rc_config $name
+run_rc_command "$1"
+```
