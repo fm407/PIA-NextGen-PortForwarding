@@ -160,8 +160,10 @@ Verify the service is running:</br>
 "rpc-username": "SomeUserName",
 "rpc-password": "SomePassword",
 "rpc-whitelist": "127.0.0.1,10.10.10.1,10.10.10.5",
--Start the transmission again service transmission start
 ```
+
+-Start the transmission service again `systemctl start transmission`</br>
+
 
 **3.Create local port-update script**</br>
 -This needs to be done under transmission user, not as root!</br>
