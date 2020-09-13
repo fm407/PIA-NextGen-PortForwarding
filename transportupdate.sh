@@ -16,7 +16,6 @@ PASSWORD='TRANSMISSION WEBUI PASS'
 # Validate the command is known by " which transmission-remote "
 # If the "transmission-remote" is not known try to " find / -name transmission-remote "
 # Then update the variable bellow with full-path to the binary
-#TRANSREMOTE='transmission-remote'
 TRANSREMOTE='/usr/bin/transmission-remote'
 
 ############ Rest of the code - do not touch #############
@@ -27,7 +26,6 @@ NEWPORT="$1"
 # Verify that received new port is a valid number.
 if ! [ "$NEWPORT" -eq "$NEWPORT" ] 2> /dev/null; then
     logger "Non-numeric port ( $NEWPORT ) received from remote host. Aborting!"
-    # EMAIL
     exit 1
 fi
 
@@ -36,7 +34,6 @@ service transmission-daemon status
 TRANSSVCRC=$?
 if [ "$TRANSSVCRC" -gt 0  ]; then
   logger "Transmission service is not running. Port update aborted!"
-  # EMAIL
         exit 1
 else
   # Configure new port received from remote system
@@ -44,7 +41,6 @@ else
   TRANSREMOTERC=$?
   if [ "$TRANSREMOTERC" -gt 0  ]; then
     logger "Error when calling transmission-remote binary. Port was NOT updated!"
-    # EMAIL
          exit 1
   fi
   logger "Transmission port succesfully updated. New port is: ${NEWPORT}"
