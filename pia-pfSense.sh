@@ -12,7 +12,7 @@ export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/root/b
 ###### Update these variables if necessary ######
 
 # OpenVPN interface name
-OVPNIFACE='ovpnc2'
+OVPNIFACE='ovpnc1'
 
 # Alias name for port forward
 PORTALIAS='Transmission_Port'
