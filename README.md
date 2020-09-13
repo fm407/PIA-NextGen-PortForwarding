@@ -97,8 +97,7 @@ notify 0 {
 -Still under root user from previous step do</br>
 
 ```
-mkdir /home/custom
-mkdir /home/custom/piaportforward
+mkdir -p /home/custom/piaportforward
 cd /home/custom/piaportforward
 touch pia-pfSense.sh
 chmod u+x pia-pfSense.sh
