@@ -60,5 +60,12 @@ ssh-keygen -b 4096 -f ~/.ssh/id_rsa
 #Files id_rsa and id_rsa.pub will be generated.
 cat id_rsa.pub
 ```
-**Store the content of id_rsa.pub somewhere as it will be required later on**
+**Store the content of id_rsa.pub somewhere as it will be required later on**</br>
 
+**8.Create custom devd config file**</br>
+-Still under root user from previous step do</br>
+```
+mkdir /usr/local/etc/devd
+cd /usr/local/etc/devd
+vi piaport.conf
+```
