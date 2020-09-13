@@ -6,6 +6,7 @@ export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/root/b
 # pfSense/Transmission integration thanks to: HolyK https://forum.netgate.com/topic/150156/pia-automatic-port-forward-update-for-transmission-daemon
 # Based on: https://github.com/thrnz/docker-wireguard-pia/blob/master/extra/pf.sh
 # Dependencies: xmlstarlet jq base64
+# Compatibility: pfSense 2.4>
 
 ###### Update these variables if necessary ######
 
