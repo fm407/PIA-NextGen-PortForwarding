@@ -45,3 +45,21 @@ System -> Advanced => tick "Enable Secure Shell"</br>
 **6.Create NAT rule for port-forward using the ALIAS instead of specific port/IP**</br>
 -Go to Firewall -> NAT</br>
 -Create new rule like bellow (blue values could be different depending on your current VPN configuration)</br>
+
+**7.Generate SSH keys for enhanced security**</br>
+-SSH to the pfSense box with the user created in step 2.</br>
+</br>
+```
+sudo su -
+#<enter your user password>
+#Enter an option: 8 for shell
+mkdir .ssh
+chmod 700 .ssh
+cd .ssh
+ssh-keygen -b 4096 -f ~/.ssh/id_rsa
+#When prompted for "Enter passphrase" just hit ENTER twice
+#Files id_rsa and id_rsa.pub will be generated.
+cat id_rsa.pub
+```
+**Store the content of id_rsa.pub somewhere as it will be required later on**
+
