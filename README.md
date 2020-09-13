@@ -35,3 +35,9 @@ System -> Advanced => tick "Enable Secure Shell"</br>
 -Create new port with name "Transmission_Port"</br>
 -Give it the current port (if you have it) or non-zero value</br>
 <img src="imgs/port-alias.png"></br>
+
+**5.Create Alias for Transmission IP address**</br>
+-Go to Firewall -> Aliases -> IP</br>
+-Create new port with name "Transmission_IP"</br>
+-Define IP or FQDN of your Transmisson daemon server</br>
+<img src="imgs/ip-alias.png"></br>
