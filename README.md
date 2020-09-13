@@ -69,3 +69,22 @@ mkdir /usr/local/etc/devd
 cd /usr/local/etc/devd
 vi piaport.conf
 ```
+-paste following code and save ( :wq )</br>
+
+```
+notify 0 {
+        match "system"          "IFNET";
+        match "subsystem"       "(ovpnc1)";
+        match "type"            "LINK_UP";
+        action "logger $subsystem is UP";
+        action "service pia-portforwarding start";
+};
+
+notify 0 {
+        match "system"          "IFNET";
+        match "subsystem"       "(ovpnc1)";
+        match "type"            "LINK_DOWN";
+        action "logger $subsystem is DOWN";
+        action "service pia-portforwarding stop";
+};
+```
