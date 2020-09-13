@@ -41,3 +41,7 @@ System -> Advanced => tick "Enable Secure Shell"</br>
 -Create new port with name "Transmission_IP"</br>
 -Define IP or FQDN of your Transmisson daemon server</br>
 <img src="imgs/ip-alias.png"></br>
+
+**6.Create NAT rule for port-forward using the ALIAS instead of specific port/IP**</br>
+-Go to Firewall -> NAT</br>
+-Create new rule like bellow (blue values could be different depending on your current VPN configuration)</br>
