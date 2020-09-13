@@ -3,6 +3,8 @@ New PIA pfSense (Private Internet Access) port forwarding API script for next ge
 
 # **Before starting make sure to have configured PIA on your pfSense according to this guide: https://blog.networkprofile.org/private-internet-access-vpn-on-pfsense/**
 
+For a list of nextgen servers supporting port forwarding: https://github.com/fm407/PIA-NextGen-PortForwarding/blob/master/nextgen-portforward-servers.txt 
+
 The scripts have variables that you must change in order for the script to work, make sure to read the scripts before running them.
 
 Your pfSense needs the following packages: `xmlstarlet` `jq` `base64`
