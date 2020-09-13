@@ -11,7 +11,7 @@ About base64: if you can't install base64 with `pkg install base64` download the
 
 Now you can follow the Installation Guide:
 
-# **pfSense side**
+# **I. pfSense side**
 
 **1.Enable SSH on pfSense**</br>
 System -> Advanced => tick "Enable Secure Shell"</br>
@@ -134,7 +134,7 @@ run_rc_command "$1"
 -(Optional) Disable SSH via WebUI under System -> Advanced => un-tick "Enable Secure Shell"</br>
 </br>
 
-# **Transmission host side**</br>
+# **II. Transmission host side**</br>
 -This part is for a Debian 10 host, your mileage may vary depending on the distro you use for your Transmission host.</br>
 -If there is something already configured on your side please read the steps anyway just to be sure there are no tiny difference.</br>
 
@@ -148,3 +148,107 @@ systemctl start ssh
 Verify the service is running:</br>
 `systemctl status ssh`
 </br>
+
+**2.Secure Transmission RPC Protocol**</br>
+-This is optional but recommended for security purpose</br>
+-STOP the transmission daemon by `systemctl stop transmission`</br>
+-Edit /etc/transmission-daemon/settings.json</br>
+-Note that the location of settings.json may vary. The above path is from Debian 10.</br>
+-Update/add following parameters. Replace username, password. Ensure that IP address of your pfSense is in whitelist.</br>
+
+```
+"rpc-authentication-required": true,
+"rpc-username": "SomeUserName",
+"rpc-password": "SomePassword",
+"rpc-whitelist": "127.0.0.1,10.10.10.1,10.10.10.5",
+-Start the transmission again service transmission start
+```
+
+**3.Create local port-update script**</br>
+-This needs to be done under transmission user, not as root!</br>
+
+```
+su - transmission
+touch ~/transportupdate.sh
+chmod u+x ~/transportupdate.sh
+vi ~/transportupdate.sh
+```
+
+-Paste the code bellow OR just download https://github.com/fm407/PIA-NextGen-PortForwarding/blob/master/transportupdate.sh and chmod +x it.</br>
+**-UPDATE the USERNAME='username' and PASSWORD='password' at the beginning of the file as per the credentials configured in step II.2.**</br>
+
+```
+
+#!/bin/sh
+export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/root/bin
+
+# Vers: 1.2
+# Date: 1.2.2020
+# This script has to be placed in the Transmission seedbox
+# Script by HolyK https://forum.netgate.com/user/holyk
+
+############ Update these please #############
+
+# Transmission-remote WEB credentials
+USERNAME='TRANSMISSION WEBUI USER'
+PASSWORD='TRANSMISSION WEBUI PASS'
+
+# Transmission-remote binary is usually under known environment location.
+# Validate the command is known by " which transmission-remote "
+# If the "transmission-remote" is not known try to " find / -name transmission-remote "
+# Then update the variable bellow with full-path to the binary
+#TRANSREMOTE='transmission-remote'
+TRANSREMOTE='/usr/bin/transmission-remote'
+
+############ Rest of the code - do not touch #############
+
+# Port numbers
+NEWPORT="$1"
+
+# Verify that received new port is a valid number.
+if ! [ "$NEWPORT" -eq "$NEWPORT" ] 2> /dev/null; then
+    logger "Non-numeric port ( $NEWPORT ) received from remote host. Aborting!"
+    # EMAIL
+    exit 1
+fi
+
+# Check if Transmission is running
+service transmission-daemon status
+TRANSSVCRC=$?
+if [ "$TRANSSVCRC" -gt 0  ]; then
+  logger "Transmission service is not running. Port update aborted!"
+        exit 1
+else
+  # Configure new port received from remote system
+  $TRANSREMOTE --auth ${USERNAME}:${PASSWORD} -p ${NEWPORT}
+  TRANSREMOTERC=$?
+  if [ "$TRANSREMOTERC" -gt 0  ]; then
+    logger "Error when calling transmission-remote binary. Port was NOT updated!"
+         exit 1
+  fi
+  logger "Transmission port succesfully updated. New port is: ${NEWPORT}"
+  exit 0
+fi
+```
+
+**4.Create/Upload public SSH key for pfSense connection**</br>
+-Still under transmission user</br>
+
+```
+mkdir ~/.ssh
+chmod 700 ~/.ssh
+cd ~/.ssh
+touch authorized_keys
+chmod 644 authorized_keys
+vi authorized_keys
+```
+
+**-Paste the content of id_rsa.pub generated in step I.7. and save ( :wq )**</br>
+
+**5.Restart OpenVPN in pfSense**</br>
+<img src="imgs/pia-restart.png"></br>
+-Wait for ~15secs and check Status -> System logs to see results</br>
+<img src="imgs/pia-status.png"></br>
+-All OK, port changed</br>
+<img src="imgs/pia-success.png"></br>
+
