@@ -107,11 +107,11 @@ vi pia-pfSense.sh
 -Paste the code from https://github.com/fm407/PIA-NextGen-PortForwarding/blob/master/pia-pfSense.sh OR just download it and chmod +x it.</br>
 **!!! Some customization is necessary. Please read the script. It will need at minimum your PIA user and pass and the Transmission host ssh user !!!**</br>
 
-Put https://github.com/fm407/PIA-NextGen-PortForwarding/blob/master/pia-portforwarding-rc in `/usr/local/etc/rc.d` and chmod +x it or just:</br>
+Put https://github.com/fm407/PIA-NextGen-PortForwarding/blob/master/pia-portforwarding-rc in `/usr/local/etc/rc.d` (rename to pia-portforwarding) and chmod +x it or just:</br>
 ```
-touch /usr/local/etc/rc.d/pia-portforwarding-rc
-chmod +x /usr/local/etc/rc.d/pia-portforwarding-rc
-vi /usr/local/etc/rc.d/pia-portforwarding-rc
+touch /usr/local/etc/rc.d/pia-portforwarding
+chmod +x /usr/local/etc/rc.d/pia-portforwarding
+vi /usr/local/etc/rc.d/pia-portforwarding
 ```
 
 And paste the following in it:</br>
@@ -129,3 +129,22 @@ start_cmd="/usr/sbin/daemon $command"
 load_rc_config $name
 run_rc_command "$1"
 ```
+
+-Disconnect form pfSense</br>
+-(Optional) Disable SSH via WebUI under System -> Advanced => un-tick "Enable Secure Shell"</br>
+</br>
+
+# **Transmission host side**</br>
+-This part is for a Debian 10 host, your mileage may vary depending on the distro you use for your Transmission host.</br>
+-If there is something already configured on your side please read the steps anyway just to be sure there are no tiny difference.</br>
+
+**1.Enable and start SSH daemon**</br>
+
+```
+systemctl enable ssh
+systemctl start ssh
+```
+
+Verify the service is running:</br>
+`systemctl status ssh`
+</br>
