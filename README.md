@@ -48,7 +48,6 @@ System -> Advanced => tick "Enable Secure Shell"</br>
 
 **7.Generate SSH keys for enhanced security**</br>
 -SSH to the pfSense box with the user created in step 2.</br>
-</br>
 ```
 sudo su -
 #<enter your user password>
