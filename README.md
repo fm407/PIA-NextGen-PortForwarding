@@ -18,9 +18,20 @@ System -> Advanced => tick "Enable Secure Shell"</br>
 <img src="imgs/ssh.png">
 
 **2.Create custom user**</br>
-Go to System -> User manager -> Add</br>
-Fill Username, password</br>
-Add "admins" group</br>
-Grant "WebCfg - All pages" and "User - System: Shell account access" priviledges</br>
-(Optional) generate SSH keys for your custom user</br>
+-Go to System -> User manager -> Add</br>
+-Fill Username, password</br>
+-Add "admins" group</br>
+-Grant "WebCfg - All pages" and "User - System: Shell account access" priviledges</br>
+-(Optional) generate SSH keys for your custom user</br>
 <img src="imgs/custom-user.png"></br>
+
+**3.Install SUDO package**</br>
+-Go to System -> Package Manager => install SUDO package</br>
+-Go to System -> sudo => create user permissions as bellow</br>
+<img src="imgs/sudo.png"></br>
+
+**4.Create Alias for port forward**</br>
+-Go to Firewall -> Aliases -> Ports</br>
+-Create new port with name "Transmission_Port"</br>
+-Give it the current port (if you have it) or non-zero value</br>
+<img src="imgs/port-alias.png"></br>
