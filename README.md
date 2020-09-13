@@ -70,7 +70,7 @@ mkdir /usr/local/etc/devd
 cd /usr/local/etc/devd
 vi piaport.conf
 ```
--paste following code and save ( :wq )</br>
+-paste following code and save ( :wq )- This will start the service when the PIA interface is up and stop it when down</br>
 
 ```
 notify 0 {
@@ -92,3 +92,17 @@ notify 0 {
 
 **Note: The "ovpnc1" is a technical name of the OpenVPN interface from within the pfSense UI**</br>
 <img src="imgs/pia-iface.png"></br>
+
+**9.Create the custom port-update script**</br>
+-Still under root user from previous step do</br>
+
+```
+mkdir /home/custom
+mkdir /home/custom/piaportforward
+cd /home/custom/piaportforward
+touch pia-pfSense.sh
+chmod u+x pia-pfSense.sh
+vi pia-pfSense.sh
+```
+-Paste the code from https://github.com/fm407/PIA-NextGen-PortForwarding/blob/master/pia-pfSense.sh OR just download it and chmod +x it.
+**!!! Some customization is necessary. Please read the script. It will need at minimum your PIA user and pass and the Transmission host ssh user !!!**
