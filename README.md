@@ -166,7 +166,7 @@ Verify the service is running:</br>
 
 
 **3.Create local port-update script**</br>
--This needs to be done under transmission user, not as root!</br>
+-This needs to be done under an unpriviledge user, not as root!</br>
 
 ```
 su - transmission
