@@ -93,8 +93,5 @@ while true; do
   wait $!
   
   bind_port
-  echo "$(date): Server accepted PF bind"
-  echo "$(date): Forwarding on port $pf_port"
-  echo "$(date): Rebind interval: $pf_bindinterval seconds"
   
 done
