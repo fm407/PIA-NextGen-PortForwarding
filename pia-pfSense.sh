@@ -5,7 +5,7 @@ export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/root/b
 # Date: 9/13/2020
 # pfSense/Transmission integration thanks to: HolyK https://forum.netgate.com/topic/150156/pia-automatic-port-forward-update-for-transmission-daemon
 # Based on: https://github.com/thrnz/docker-wireguard-pia/blob/master/extra/pf.sh
-# Dependencies: xmlstarlet jq base64
+# Dependencies: xmlstarlet jq
 # Compatibility: pfSense 2.4>
 # Before starting setup PIA following this guide: https://blog.networkprofile.org/private-internet-access-vpn-on-pfsense/
 
@@ -81,8 +81,8 @@ get_sig () {
   fi
   pf_payload=$(echo $pf_getsig | jq -r .payload)
   pf_getsignature=$(echo $pf_getsig | jq -r .signature)
-  pf_port=$(echo $pf_payload | base64 -d | jq -r .port)
-  pf_token_expiry_raw=$(echo $pf_payload | base64 -d | jq -r .expires_at)
+  pf_port=$(echo $pf_payload | b64decode -r | jq -r .port)
+  pf_token_expiry_raw=$(echo $pf_payload | b64decode -r | jq -r .expires_at)
   pf_token_expiry=$(date -jf %Y-%m-%dT%H:%M:%S "$pf_token_expiry_raw" +%s)
 }
 
