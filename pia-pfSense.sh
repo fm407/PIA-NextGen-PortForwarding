@@ -44,7 +44,7 @@ pass='YOUR PIA PASSWORD'
 ###### Nextgen PIA port forwarding      ##################
 
 get_auth_token () {
-    tok=$(curl --insecure --silent --show-error --request POST --max-time $curl_max_time \
+    tok=$(curl --interface ${OVPNIFACE} --insecure --silent --show-error --request POST --max-time $curl_max_time \
         --header "Content-Type: application/json" \
         --data "{\"username\":\"$user\",\"password\":\"$pass\"}" \
         "https://www.privateinternetaccess.com/api/client/v2/token" | jq -r '.token')
@@ -55,7 +55,7 @@ get_auth_token () {
 get_auth_token > /dev/null 2>&1
 
 bind_port () {
-  pf_bind=$(curl --insecure --get --silent --show-error \
+  pf_bind=$(curl --interface ${OVPNIFACE} --insecure --get --silent --show-error \
       --retry $curl_retry --retry-delay $curl_retry_delay --max-time $curl_max_time \
       --data-urlencode "payload=$pf_payload" \
       --data-urlencode "signature=$pf_getsignature" \
@@ -69,7 +69,7 @@ bind_port () {
 }
 
 get_sig () {
-  pf_getsig=$(curl --insecure --get --silent --show-error \
+  pf_getsig=$(curl --interface ${OVPNIFACE} --insecure --get --silent --show-error \
     --retry $curl_retry --retry-delay $curl_retry_delay --max-time $curl_max_time \
     --data-urlencode "token=$tok" \
     $verify \
@@ -95,7 +95,7 @@ pf_minreuse=$(( 60 * 60 * 24 * 7 ))
 
 pf_remaining=0
 pf_firstrun=1
-vpn_ip=$(traceroute -m 1 privateinternetaccess.com | tail -n 1 | awk '{print $2}')
+vpn_ip=$(traceroute -i ${OVPNIFACE} -m 1 privateinternetaccess.com | tail -n 1 | awk '{print $2}')
 pf_host="$vpn_ip"
 
 while true; do
@@ -184,8 +184,5 @@ logger "[PIA] New port successfully updated in remote Transmission system."
   wait $!
 
   bind_port
-  echo "$(date): Server accepted PF bind"
-  echo "$(date): Forwarding on port $pf_port"
-  echo "$(date): Rebind interval: $pf_bindinterval seconds"
 
 done
