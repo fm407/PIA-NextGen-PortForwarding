@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# place this in /usr/local/etc/rc.d then chmod +x pia-portforwarding-rc
+# place this in /usr/local/etc/rc.d then chmod +x pia-portforwarding-rc and rename according to the guide
 
 . /etc/rc.subr
 
