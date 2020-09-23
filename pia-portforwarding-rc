@@ -1,14 +1,15 @@
 #!/bin/sh
 
-# place this in /usr/local/etc/rc.d then chmod +x pia-portforwarding-rc and rename according to the guide
+# REQUIRE: LOGIN
 
 . /etc/rc.subr
 
-name=pia-portforwarding
-rcvar=`set_rcvar`
-# modify the path location to pia-pfSense.sh
-command=/usr/src/pia-pfSense.sh
-start_cmd="/usr/sbin/daemon $command"
+name="piaportforwarding"
+rcvar="${name}_enable"
+command="/home/custom/piaportforward/pia-pfSense.sh"
+command_interpreter="/bin/sh"
+pf_user=root
+start_cmd="/usr/sbin/daemon -u $pf_user $command"
 
 load_rc_config $name
 run_rc_command "$1"
