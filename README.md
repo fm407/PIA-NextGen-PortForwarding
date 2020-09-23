@@ -78,7 +78,7 @@ notify 0 {
         match "subsystem"       "(ovpnc1)";
         match "type"            "LINK_UP";
         action "logger $subsystem is UP";
-        action "service pia-portforwarding start";
+        action "service piaportforwarding start";
 };
 
 notify 0 {
@@ -86,7 +86,7 @@ notify 0 {
         match "subsystem"       "(ovpnc1)";
         match "type"            "LINK_DOWN";
         action "logger $subsystem is DOWN";
-        action "service pia-portforwarding stop";
+        action "service piaportforwarding stop";
 };
 ```
 
@@ -107,10 +107,11 @@ vi pia-pfSense.sh
 **!!! Some customization is necessary. Please read the script. It will need at minimum your PIA user and pass and the Transmission host ssh user !!!**</br>
 
 Put https://github.com/fm407/PIA-NextGen-PortForwarding/blob/master/pia-portforwarding-rc in `/usr/local/etc/rc.d` (rename to pia-portforwarding) and chmod +x it or just:</br>
+
 ```
-touch /usr/local/etc/rc.d/pia-portforwarding
-chmod +x /usr/local/etc/rc.d/pia-portforwarding
-vi /usr/local/etc/rc.d/pia-portforwarding
+touch /usr/local/etc/rc.d/piaportforwarding
+chmod +x /usr/local/etc/rc.d/piaportforwarding
+vi /usr/local/etc/rc.d/piaportforwarding
 ```
 
 And paste the following in it:</br>
@@ -118,16 +119,29 @@ And paste the following in it:</br>
 ```
 #!/bin/sh
 
+# REQUIRE: LOGIN
+
 . /etc/rc.subr
 
-name=pia-portforwarding
-rcvar=`set_rcvar`
-command=/home/custom/piaportforward/pia-pfSense.sh
-start_cmd="/usr/sbin/daemon $command"
+name="piaportforwarding"
+rcvar="${name}_enable"
+command="/home/custom/piaportforward/pia-pfSense.sh"
+command_interpreter="/bin/sh"
+pf_user=root
+start_cmd="/usr/sbin/daemon -u $pf_user $command"
 
 load_rc_config $name
 run_rc_command "$1"
 ```
+Then:</br>
+
+```
+touch /etc/rc.conf.local
+vi /etc/rc.conf.local
+```
+</br>
+
+And paste the following: `piaportforwarding_enable="YES"`
 
 -Disconnect form pfSense</br>
 -(Optional) Disable SSH via WebUI under System -> Advanced => un-tick "Enable Secure Shell"</br>
