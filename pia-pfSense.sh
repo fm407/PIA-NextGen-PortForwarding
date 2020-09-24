@@ -136,9 +136,7 @@ logger "[PIA] Current NAT rule port: $NATPORT"
 # If the acquired port is the same as already configured do not pointlessly reload config.
 if [ "$NATPORT" -eq "$pf_port" ]; then
 	logger "[PIA] Acquired port $pf_port equals the already configured port $NATPORT - no action required."
-	exit 0
-fi
-
+	else
 # If the port has changed update the tempconfig file.
 xml ed -u "//alias[name=\"$PORTALIAS\"]/address" -v $pf_port $CONFFILE > $TMPCONFFILE
 
@@ -179,10 +177,16 @@ if [ "$TRANSRC" -gt 0  ]; then
 	exit 1
 fi
 logger "[PIA] New port successfully updated in remote Transmission system."
+fi
 
+  logger "[PIA] Rebinding Port..."
   sleep $pf_bindinterval &
   wait $!
-
+  echo "Binding..."
   bind_port
+  echo "$(date): Server accepted PF bind"
+  echo "$(date): Forwarding on port $pf_port"
+  echo "$(date): Rebind interval: $pf_bindinterval seconds"
+
 
 done
