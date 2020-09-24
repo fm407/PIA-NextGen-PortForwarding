@@ -1,8 +1,8 @@
 #!/bin/sh
 export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/root/bin
 
-# Vers: 0.1 beta
-# Date: 9/13/2020
+# Vers: 1.0 beta
+# Date: 9/24/2020
 # pfSense/Transmission integration thanks to: HolyK https://forum.netgate.com/topic/150156/pia-automatic-port-forward-update-for-transmission-daemon
 # Based on: https://github.com/thrnz/docker-wireguard-pia/blob/master/extra/pf.sh
 # Dependencies: xmlstarlet jq
