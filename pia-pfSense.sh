@@ -155,7 +155,7 @@ cp $TMPCONFFILE $CONFFILE
 # Force pfSense to re-read it's config and reload the rules.
 rm /tmp/config.cache
 /etc/rc.filter_configure
-logger "[PIA] New port $pf_port udpated in pfSense config file."
+logger "[PIA] New port $pf_port updated in pfSense config file."
 
 # Check if Transmission host is reachable
 ping -c1 -t1 -q $TRANSIP
