@@ -7,7 +7,7 @@ For a list of nextgen servers supporting port forwarding: https://github.com/fm4
 
 The scripts have variables that you must change in order for the script to work, make sure to read the scripts before running them.
 
-Your pfSense needs the following packages: `xmlstarlet` `jq`
+Your pfSense needs the following packages: `xmlstarlet` `jq` and `bash`
 
 Now you can follow this guide:
 
