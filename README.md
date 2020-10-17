@@ -89,7 +89,10 @@ notify 0 {
         action "service piaportforwarding stop";
 };
 ```
-
+-Restart devd to properly parse the new definition
+```
+service devd restart
+```
 **Note: The "ovpnc1" is a technical name of the OpenVPN interface from within the pfSense UI**</br>
 <img src="imgs/pia-iface.png"></br>
 
