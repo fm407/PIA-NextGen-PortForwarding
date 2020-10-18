@@ -47,22 +47,6 @@ System -> Advanced => tick "Enable Secure Shell"</br>
 -Create new rule like bellow (some values could be different depending on your current VPN configuration)</br>
 <img src="imgs/pia-nat.png"></br>
 
-**7.Generate SSH keys for enhanced security**</br>
--SSH to the pfSense box with the user created in step 2.</br>
-```
-sudo su -
-#<enter your user password>
-#Enter an option: 8 for shell
-mkdir .ssh
-chmod 700 .ssh
-cd .ssh
-ssh-keygen -b 4096 -f ~/.ssh/id_rsa
-#When prompted for "Enter passphrase" just hit ENTER twice
-#Files id_rsa and id_rsa.pub will be generated.
-cat id_rsa.pub
-```
-**Store the content of id_rsa.pub somewhere as it will be required later on**</br>
-
 **8.Create custom devd config file**</br>
 -Still under root user from previous step do</br>
 ```
@@ -107,7 +91,7 @@ chmod u+x pia-pfSense.sh
 vi pia-pfSense.sh
 ```
 -Paste the code from https://github.com/fm407/PIA-NextGen-PortForwarding/blob/master/pia-pfSense.sh OR just download it and chmod +x it.</br>
-**!!! Some customization is necessary. Please read the script. It will need at minimum your PIA user and pass and the Transmission host ssh user !!!**</br>
+**!!! Some customization is necessary. Please read the script. It will need at minimum your PIA user and pass and the Transmission rpc user/pass !!!**</br>
 
 Put https://github.com/fm407/PIA-NextGen-PortForwarding/blob/master/pia-portforwarding-rc in `/usr/local/etc/rc.d` (rename to pia-portforwarding) and chmod +x it or just:</br>
 
@@ -154,23 +138,11 @@ And paste the following: `piaportforwarding_enable="YES"`
 -This part is for a Debian 10 host, your mileage may vary depending on the distro you use for your Transmission host.</br>
 -If there is something already configured on your side please read the steps anyway just to be sure there are no tiny difference.</br>
 
-**1.Enable and start SSH daemon**</br>
-
-```
-systemctl enable ssh
-systemctl start ssh
-```
-
-Verify the service is running:</br>
-`systemctl status ssh`
-</br>
-
-**2.Secure Transmission RPC Protocol**</br>
--This is optional but recommended for security purpose</br>
+**1.Secure Transmission RPC Protocol**</br>
 -STOP the transmission daemon by `systemctl stop transmission`</br>
 -Edit /etc/transmission-daemon/settings.json</br>
 -Note that the location of settings.json may vary. The above path is from Debian 10.</br>
--Update/add following parameters. Replace username, password. Ensure that IP address of your pfSense is in whitelist.</br>
+-Update/add following parameters. Replace username, password. Ensure that IP address of your pfSense is in whitelist, you can whitelist additional IPs.</br>
 
 ```
 "rpc-authentication-required": true,
@@ -181,92 +153,9 @@ Verify the service is running:</br>
 
 -Start the transmission service again `systemctl start transmission`</br>
 
-
-**3.Create local port-update script**</br>
--This needs to be done under an unpriviledge user, not as root!</br>
-
-```
-su - transmission
-touch ~/transportupdate.sh
-chmod u+x ~/transportupdate.sh
-vi ~/transportupdate.sh
-```
-
--Paste the code bellow OR just download https://github.com/fm407/PIA-NextGen-PortForwarding/blob/master/transportupdate.sh and chmod +x it.</br>
-**-UPDATE the USERNAME='username' and PASSWORD='password' at the beginning of the file as per the credentials configured in step II.2.**</br>
-
-```
-
-#!/bin/sh
-export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/root/bin
-
-# Vers: 1.2
-# Date: 1.2.2020
-# This script has to be placed in the Transmission seedbox
-# Script by HolyK https://forum.netgate.com/user/holyk
-
-############ Update these please #############
-
-# Transmission-remote WEB credentials
-USERNAME='TRANSMISSION WEBUI USER'
-PASSWORD='TRANSMISSION WEBUI PASS'
-
-# Transmission-remote binary is usually under known environment location.
-# Validate the command is known by " which transmission-remote "
-# If the "transmission-remote" is not known try to " find / -name transmission-remote "
-# Then update the variable bellow with full-path to the binary
-#TRANSREMOTE='transmission-remote'
-TRANSREMOTE='/usr/bin/transmission-remote'
-
-############ Rest of the code - do not touch #############
-
-# Port numbers
-NEWPORT="$1"
-
-# Verify that received new port is a valid number.
-if ! [ "$NEWPORT" -eq "$NEWPORT" ] 2> /dev/null; then
-    logger "Non-numeric port ( $NEWPORT ) received from remote host. Aborting!"
-    # EMAIL
-    exit 1
-fi
-
-# Check if Transmission is running
-service transmission-daemon status
-TRANSSVCRC=$?
-if [ "$TRANSSVCRC" -gt 0  ]; then
-  logger "Transmission service is not running. Port update aborted!"
-        exit 1
-else
-  # Configure new port received from remote system
-  $TRANSREMOTE --auth ${USERNAME}:${PASSWORD} -p ${NEWPORT}
-  TRANSREMOTERC=$?
-  if [ "$TRANSREMOTERC" -gt 0  ]; then
-    logger "Error when calling transmission-remote binary. Port was NOT updated!"
-         exit 1
-  fi
-  logger "Transmission port succesfully updated. New port is: ${NEWPORT}"
-  exit 0
-fi
-```
-
-**4.Create/Upload public SSH key for pfSense connection**</br>
--Still under transmission user</br>
-
-```
-mkdir ~/.ssh
-chmod 700 ~/.ssh
-cd ~/.ssh
-touch authorized_keys
-chmod 644 authorized_keys
-vi authorized_keys
-```
-
-**-Paste the content of id_rsa.pub generated in step I.7. and save ( :wq )**</br>
-
-**5.Restart OpenVPN in pfSense**</br>
+**2.Restart OpenVPN in pfSense**</br>
 <img src="imgs/pia-restart.png"></br>
 -Wait for ~15secs and check Status -> System logs to see results</br>
 <img src="imgs/pia-status.png"></br>
 -All OK, port changed</br>
 <img src="imgs/pia-success.png"></br>
-
