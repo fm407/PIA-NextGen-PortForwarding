@@ -47,9 +47,12 @@ System -> Advanced => tick "Enable Secure Shell"</br>
 -Create new rule like bellow (some values could be different depending on your current VPN configuration)</br>
 <img src="imgs/pia-nat.png"></br>
 
-**8.Create custom devd config file**</br>
--Still under root user from previous step do</br>
+**7.Create custom devd config file**</br>
+-SSH to the pfSense box with the user created in step 2.</br>
 ```
+sudo su -
+#<enter your user password>
+#Enter an option: 8 for shell
 mkdir /usr/local/etc/devd
 cd /usr/local/etc/devd
 vi piaport.conf
@@ -80,7 +83,7 @@ service devd restart
 **Note: The "ovpnc1" is a technical name of the OpenVPN interface from within the pfSense UI**</br>
 <img src="imgs/pia-iface.png"></br>
 
-**9.Create the custom port-update script**</br>
+**8.Create the custom port-update script**</br>
 -Still under root user from previous step do</br>
 
 ```
