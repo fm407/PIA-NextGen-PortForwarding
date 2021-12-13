@@ -92,7 +92,7 @@ perl -pi -e 's/FreeBSD:\ \{\ enabled:\ no/FreeBSD:\ \{\ enabled:\ yes/g' /usr/lo
 perl -pi -e 's/FreeBSD:\ \{\ enabled:\ no/FreeBSD:\ \{\ enabled:\ yes/g' /usr/local/share/pfSense/pkg/repos/pfSense-repo.conf
 pkg install xmlstarlet
 ```
--Answer "y" to the installation prompts
+-Answer "y" to the installation prompts</br>
 -`jq` should be already present (`which jq` returns path to binary) but in case it is missing install it by `pkg install jq`
 
 **9.Create the custom port-update script**</br>
