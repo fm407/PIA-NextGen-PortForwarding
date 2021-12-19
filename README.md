@@ -9,7 +9,7 @@ For a list of nextgen servers supporting port forwarding: https://github.com/fm4
 
 The scripts have variables that you must change in order for the script to work, make sure to read the scripts before running them.
 
-Your pfSense needs the following packages: `xmlstarlet` `jq`
+Your pfSense needs the following packages: `xmlstarlet` `jq` (details in step I.8.)
 
 Now you can follow this guide:
 
@@ -85,8 +85,18 @@ service devd restart
 **Note: The "ovpnc1" is a technical name of the OpenVPN interface from within the pfSense UI**</br>
 <img src="imgs/pia-iface.png"></br>
 
-**8.Create the custom port-update script**</br>
+**8.Install xmlstarlet and jq packages**</br>
 -Still under root user from previous step do</br>
+```
+perl -pi -e 's/FreeBSD:\ \{\ enabled:\ no/FreeBSD:\ \{\ enabled:\ yes/g' /usr/local/etc/pkg/repos/FreeBSD.conf
+perl -pi -e 's/FreeBSD:\ \{\ enabled:\ no/FreeBSD:\ \{\ enabled:\ yes/g' /usr/local/share/pfSense/pkg/repos/pfSense-repo.conf
+pkg install xmlstarlet
+```
+-Answer "y" to the installation prompts</br>
+-`jq` should be already present (`which jq` returns path to binary) but in case it is missing install it by `pkg install jq`
+
+**9.Create the custom port-update script**</br>
+-Still under root user from step 7. do</br>
 
 ```
 mkdir -p /home/custom/piaportforward
